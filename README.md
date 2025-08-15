@@ -1,2 +1,0 @@
-# final
-apprenti final project
