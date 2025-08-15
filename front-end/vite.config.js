@@ -8,23 +8,19 @@ export default defineConfig({
     port: 3000
   },
   define: {
-      global: 'globalThis',
-},
+    global: 'globalThis',
+  },
   resolve: {
-
     alias: {
-
       buffer: 'buffer',
-
     },
-
   },
-
   optimizeDeps: {
-
     include: ['buffer'],
-
   },
-
+  build: {
+    rollupOptions: {
+      external: [],
+    },
+  },
 })
-

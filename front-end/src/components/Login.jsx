@@ -30,6 +30,7 @@ const Login = () => {
 
     const handlePhantomLogin = async () => {
         try {
+            await new Promise(resolve => setTimeout(resolve, 100));
             const walletAddress = publicKey.toString();
 
             const response = await fetch('http://localhost:8080/api/phantom/connect', {
@@ -62,7 +63,7 @@ const Login = () => {
                 {error && <div style={{color: 'red'}}>{error}</div>}
                 <input
                     type="text"
-                    placeholder="Username"
+                    placeholder="Email"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required

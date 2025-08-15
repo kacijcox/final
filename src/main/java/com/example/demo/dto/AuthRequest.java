@@ -1,7 +1,11 @@
 package com.example.demo.dto;
 
+import jakarta.validation.constraints.Email;
+
 public class AuthRequest {
+    @Email(message = "Invalid email format")
     private String userName;
+
     private String password;
 
     public String getUserName() {
