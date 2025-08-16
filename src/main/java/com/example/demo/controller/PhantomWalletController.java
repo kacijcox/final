@@ -12,10 +12,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/phantom")
 public class PhantomWalletController {
-
+    //link phantom wallet service to controller
     @Autowired
     private PhantomWalletService phantomWalletService;
-
+    //connect wallet to user account. wildcard for path variable to return different wallets based on wallet address
     @PostMapping("/connect")
     public ResponseEntity<?> connectWallet(@RequestBody Map<String, String> request) {
         String walletAddress = request.get("walletAddress");
@@ -30,7 +30,7 @@ public class PhantomWalletController {
             return ResponseEntity.ok(saved);
         }
     }
-
+    //get user wallet address to
     @GetMapping("/wallet/{address}")
     public ResponseEntity<?> getWallet(@PathVariable String address) {
         Optional<PhantomWallet> wallet = phantomWalletService.findByWalletAddress(address);

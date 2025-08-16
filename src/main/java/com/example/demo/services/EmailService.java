@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
-
+    //link email service
     @Autowired
     private JavaMailSender mailSender;
-
+    //send confirmation email
     public void sendConfirmationEmail(String toEmail, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);

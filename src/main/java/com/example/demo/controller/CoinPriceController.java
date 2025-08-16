@@ -16,15 +16,17 @@ import java.util.Optional;
 @RequestMapping("/coin-price")
 
 public class CoinPriceController {
+
+    //link coin price repository to controller
     @Autowired
     CoinPriceRepository coinPriceRepository;
-
+    //get all coin prices
     @GetMapping()
     public ResponseEntity<List<CoinPrice>> getCoinPrice() {
         List<CoinPrice> coinPrice = coinPriceRepository.findAll();
         return ResponseEntity.ok(coinPrice);
     }
-
+    //get coin price by id
     @GetMapping("/{coinId}")
     public ResponseEntity<CoinPrice> getCoinPrice(@PathVariable String coinId) {
         Optional<CoinPrice> coinPriceOptional = coinPriceRepository.findById(coinId);
@@ -33,7 +35,7 @@ public class CoinPriceController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
-
+    //add new coin price
     @PostMapping
     public ResponseEntity<CoinPrice> addItem(@RequestBody CoinPrice coinPrice) {
         coinPrice.setCoinUsd(0);
