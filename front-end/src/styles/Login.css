@@ -1,0 +1,12 @@
+.warning-message {
+    color: red;
+    animation: blink-animation 1s steps(1, start) infinite;
+    color: red;
+    font-weight: bold;
+}
+
+@keyframes blink-animation {
+    50% {
+        opacity: 0;
+    }
+}

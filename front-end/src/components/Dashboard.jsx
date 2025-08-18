@@ -1,21 +1,25 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useWallet} from '@solana/wallet-adapter-react';
 import authService from '../services/authService';
 import CoinSelection from './CoinSelection'
 import '../styles/Dashboard.css';
+import Chart from "./Chart.jsx";
+import FavoriteToggle from "./FavoriteToggle.jsx";
 
 
 const Dashboard = () => {
     const navigate = useNavigate();
     const username = authService.getUsername();
+    const[currentCoinId, setCurrentCoinId] = useState(null);
+
+    const {connected, disconnect: disconnectWallet, publicKey} = useWallet();
+    const walletAddress = publicKey ? publicKey.toString() : null;
 
     const handleRegularLogout = () => {
         authService.logout();
         navigate('/login');
     };
-
-    const {connected, disconnect: disconnectWallet} = useWallet();
 
     // this was an issue i faced: proper logging out of the wallet and loading of the login page
     const handleWalletLogout = async () => {
@@ -40,6 +44,7 @@ const Dashboard = () => {
 
     return (
         <>
+
             <div className="header-section">
                 <h1 className="welcome-header">Welcome, {username}!</h1>
 
@@ -61,11 +66,19 @@ const Dashboard = () => {
                 <h2 className="dashboard-header">HedgeHog Dashboard</h2>
             </div>
             <div className="coin-selection">
-                <CoinSelection/>
+                <CoinSelection onCoinLoaded={setCurrentCoinId}/>
+                <FavoriteToggle
+                coinId={currentCoinId}
+                userId={username || null}
+                walletAddress={walletAddress || null}
+                />
             </div>
+            <div className="chart-container">
+                <Chart/>
+            </div>
+
         </>
     );
-    ;
 };
 
 export default Dashboard;

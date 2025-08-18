@@ -3,6 +3,8 @@ import {useNavigate} from 'react-router-dom';
 import authService from '../services/authService';
 import {WalletMultiButton} from "@solana/wallet-adapter-react-ui";
 import {useWallet} from "@solana/wallet-adapter-react";
+import '../styles/Login.css';
+
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -58,6 +60,9 @@ const Login = () => {
 
     return (
         <div>
+            <h3 className="warning-message">IMPORTANT: PLEASE ONLY USE A TEST WALLET. THIS SITE DOES NOT PROTECT AGAINST ROUGE TRANSACTION SIGNING</h3>
+
+
             <h2>Login</h2>
             <form onSubmit={handleRegularLogin}>
                 {error && <div style={{color: 'red'}}>{error}</div>}
