@@ -10,7 +10,8 @@ const favoriteService = {
             body: JSON.stringify({coinId, userId}),
         });
         if (!res.ok) throw new Error(`Failed to save favorite (user): ${res.status}`);
-        return res.json(); // controller returns the saved CoinFavorite
+        return res.json();
+        //controller returns the saved CoinFavorite
     },
 
     //add favorite for wallet user

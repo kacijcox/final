@@ -6,15 +6,25 @@ import CoinSelection from './CoinSelection'
 import '../styles/Dashboard.css';
 import Chart from "./Chart.jsx";
 import FavoriteToggle from "./FavoriteToggle.jsx";
+import ShowFavorites from "./ShowFavorites.jsx";
 
 
 const Dashboard = () => {
     const navigate = useNavigate();
     const username = authService.getUsername();
+    const authType = authService.getAuthType();
+    const isWalletAuth = authType === 'phantom';
     const[currentCoinId, setCurrentCoinId] = useState(null);
 
     const {connected, disconnect: disconnectWallet, publicKey} = useWallet();
     const walletAddress = publicKey ? publicKey.toString() : null;
+
+    const displayName = username && username.includes('@') ? username.split('@')[0] : username;
+    const walletName = walletAddress ? `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}` : walletAddress;
+
+
+    //create const to not pass user id to favorites when wallet is connected
+    const userIdForFavorites = isWalletAuth ? null : username;
 
     const handleRegularLogout = () => {
         authService.logout();
@@ -46,11 +56,11 @@ const Dashboard = () => {
         <>
 
             <div className="header-section">
-                <h1 className="welcome-header">Welcome, {username}!</h1>
-
+                <h1 className="welcome-header">Welcome, {isWalletAuth ? walletName : displayName}!</h1>
                 {connected ? (
                     <>
-                        <button className="logout-button" onClick={handleWalletLogout}>
+
+                    <button className="logout-button" onClick={handleWalletLogout}>
                             Disconnect Wallet
                         </button>
                         <button className="logout-button" onClick={handleRegularLogout}>
@@ -69,9 +79,9 @@ const Dashboard = () => {
                 <CoinSelection onCoinLoaded={setCurrentCoinId}/>
                 <FavoriteToggle
                 coinId={currentCoinId}
-                userId={username || null}
-                walletAddress={walletAddress || null}
+                userId={userIdForFavorites} walletAddress={walletAddress || null}
                 />
+                <ShowFavorites userId={userIdForFavorites} walletAddress={walletAddress || null} />
             </div>
             <div className="chart-container">
                 <Chart/>

@@ -10,18 +10,17 @@ function FavoriteToggle({ coinId, userId, walletAddress }) {
 
   async function handleSave(e) {
     e.preventDefault();
-      console.log('handleSave clicked', { coinId, userId, walletAddress, canSave, checked });
 
       if (!canSave) return;
     setSaving(true);
     setError(null);
     try {
-      if (userId) {
-        await favoriteService.favoritesUser(coinId, userId);
-      } else {
-        await favoriteService.favoritesWallet(coinId, walletAddress);
-      }
-      setChecked(true);
+        if (walletAddress) {
+            await favoriteService.favoritesWallet(coinId, walletAddress);
+        } else if (userId) {
+            await favoriteService.favoritesUser(coinId, userId);
+        }
+        setChecked(true);
     } catch (err) {
       setError('Could not save favorite');
     } finally {
@@ -45,7 +44,7 @@ function FavoriteToggle({ coinId, userId, walletAddress }) {
       >
         {saving ? 'Saving...' : 'Submit Favorite'}
       </button>
-      {!canSave && <small style={{ marginLeft: 8 }}>(fetch a coin first and ensure user or wallet)</small>}
+      {!canSave && <small style={{ marginLeft: 8 }}>(saves coin to favorite list)</small>}
       {error && <div style={{ color: 'red', marginTop: 6 }}>{error}</div>}
     </div>
   );
