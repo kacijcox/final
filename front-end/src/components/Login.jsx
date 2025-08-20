@@ -26,13 +26,20 @@ const Login = () => {
 
     useEffect(() => {
         if (connected && publicKey) {
-            handlePhantomLogin();
+            setTimeout(() => {
+                handlePhantomLogin();
+            }, 500);
         }
     }, [connected, publicKey]);
 
     const handlePhantomLogin = async () => {
         try {
             await new Promise(resolve => setTimeout(resolve, 100));
+
+            if (!publicKey) {
+                return;
+            }
+
             const walletAddress = publicKey.toString();
 
             const response = await fetch('http://localhost:8080/api/phantom/connect', {

@@ -116,8 +116,15 @@ const CoinSelection = ( {onCoinLoaded}) => {
                                 <p className="current-price">${priceData.usd.toLocaleString()}</p>
                                 {priceData.usd_24h_change !== undefined && (
                                     <p className="price-change">
-                                        {priceData.usd_24h_change >= 0 ? '+' : ''}
+                                        24hr Change: {priceData.usd_24h_change >= 0 ? '+' : ''}
                                         {priceData.usd_24h_change.toFixed(2)}% (24h)
+                                        <p className="market-cap">Market Cap:
+                                            ${priceData.usd_market_cap.toLocaleString(undefined, {
+                                                minimumFractionDigits:2,
+                                                maximumFractionDigits:2
+                                            })}
+                                            <p className="volume">24hr Volume: ${priceData.usd_24h_vol.toLocaleString()}</p>
+                                        </p>
                                     </p>
                                 )}
                             </>

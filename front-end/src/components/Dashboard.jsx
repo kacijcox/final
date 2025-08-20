@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useWallet} from '@solana/wallet-adapter-react';
 import authService from '../services/authService';
@@ -8,42 +8,63 @@ import Chart from "./Chart.jsx";
 import FavoriteToggle from "./FavoriteToggle.jsx";
 import ShowFavorites from "./ShowFavorites.jsx";
 
-
 const Dashboard = () => {
     const navigate = useNavigate();
     const username = authService.getUsername();
     const authType = authService.getAuthType();
     const isWalletAuth = authType === 'phantom';
-    const[currentCoinId, setCurrentCoinId] = useState(null);
+    const [currentCoinId, setCurrentCoinId] = useState(null);
 
     const {connected, disconnect: disconnectWallet, publicKey} = useWallet();
-    const walletAddress = publicKey ? publicKey.toString() : null;
 
-    const displayName = username && username.includes('@') ? username.split('@')[0] : username;
-    const walletName = walletAddress ? `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}` : walletAddress;
+    const getWalletAddress = () => {
+        if (isWalletAuth) {
+            const storedAddress = localStorage.getItem('walletAddress');
+            if (storedAddress) {
+                return storedAddress;
+            }
+            return publicKey ? publicKey.toString() : null;
+        }
+        return null;
+    };
 
+    const walletAddress = getWalletAddress();
 
-    //create const to not pass user id to favorites when wallet is connected
+    useEffect(() => {
+        if (connected && publicKey && isWalletAuth) {
+            const address = publicKey.toString();
+            localStorage.setItem('walletAddress', address);
+        }
+    }, [connected, publicKey, isWalletAuth]);
+
+    const displayName = username && username.includes('@')
+        ? username.split('@')[0]
+        : username;
+
+    const walletName = walletAddress
+        ? `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}`
+        : null;
+
     const userIdForFavorites = isWalletAuth ? null : username;
+    const walletAddressForFavorites = isWalletAuth ? walletAddress : null;
 
     const handleRegularLogout = () => {
         authService.logout();
         navigate('/login');
     };
 
-    // this was an issue i faced: proper logging out of the wallet and loading of the login page
     const handleWalletLogout = async () => {
         try {
             if (connected) {
                 await disconnectWallet();
-                // waiting for wallet to fully disconnect
                 await new Promise(resolve => setTimeout(resolve, 500));
             }
         } catch (error) {
             console.warn('Wallet disconnect error:', error);
         } finally {
-            // clear wallet storage
+            localStorage.removeItem('walletAddress');
             localStorage.removeItem('walletName');
+            localStorage.clear();
             sessionStorage.clear();
 
             authService.logout();
@@ -51,18 +72,20 @@ const Dashboard = () => {
         }
     };
 
-
     return (
         <>
-
             <div className="header-section">
-                <h1 className="welcome-header">Welcome, {isWalletAuth ? walletName : displayName}!</h1>
-                {connected ? (
-                    <>
+                <h1 className="welcome-header">
+                    Welcome{isWalletAuth && walletName ? `, ${walletName}` : displayName ? `, ${displayName}` : ''}!
+                </h1>
 
-                    <button className="logout-button" onClick={handleWalletLogout}>
-                            Disconnect Wallet
-                        </button>
+                {isWalletAuth ? (
+                    <>
+                        {connected && (
+                            <button className="logout-button" onClick={handleWalletLogout}>
+                                Disconnect Wallet
+                            </button>
+                        )}
                         <button className="logout-button" onClick={handleRegularLogout}>
                             Logout
                         </button>
@@ -75,18 +98,25 @@ const Dashboard = () => {
 
                 <h2 className="dashboard-header">HedgeHog Dashboard</h2>
             </div>
+
             <div className="coin-selection">
                 <CoinSelection onCoinLoaded={setCurrentCoinId}/>
+
                 <FavoriteToggle
-                coinId={currentCoinId}
-                userId={userIdForFavorites} walletAddress={walletAddress || null}
+                    coinId={currentCoinId}
+                    userId={userIdForFavorites}
+                    walletAddress={walletAddressForFavorites}
                 />
-                <ShowFavorites userId={userIdForFavorites} walletAddress={walletAddress || null} />
+
+                <ShowFavorites
+                    userId={userIdForFavorites}
+                    walletAddress={walletAddressForFavorites}
+                />
             </div>
+
             <div className="chart-container">
                 <Chart/>
             </div>
-
         </>
     );
 };

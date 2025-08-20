@@ -34,7 +34,6 @@ public class CoingeckoClient {
                 .queryParam("include_market_cap", "true")
                 .queryParam("include_24hr_vol", "true")
                 .queryParam("include_24hr_change", "true")
-                .queryParam("include_last_updated_at", "true")
                 .queryParam("precision", "full")
                 .build(true)
                 .toUri();
