@@ -1,12 +1,127 @@
+/*@keyframes blink-animation {*/
+/*    50% {*/
+/*        opacity: 0;*/
+/*    }*/
+/*}*/
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7fa;
+    color: #333;
+}
+
 .warning-message {
     color: red;
     animation: blink-animation 1s steps(1, start) infinite;
     color: red;
     font-weight: bold;
+    text-align: center;
 }
 
-@keyframes blink-animation {
-    50% {
-        opacity: 0;
-    }
+.welcome-hedgehog {
+    text-align: center;
+    font-size: 36px;
+    margin: 24px 0;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+form input[type="text"],
+form input[type="password"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+form button[type="submit"] {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+form button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.login-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px auto;
+    max-width: 320px;
+}
+
+.login-divider::before,
+.login-divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+}
+
+.login-divider:not(:empty)::before {
+    margin-right: 0.75em;
+}
+
+.login-divider:not(:empty)::after {
+    margin-left: 0.75em;
+}
+
+.login-divider span {
+    font-size: 14px;
+    color: #666;
+}
+
+.phantom-login {
+    text-align: center;
+    margin: 20px auto;
+}
+
+.phantom-login h3 {
+    margin-bottom: 12px;
+    font-size: 18px;
+    color: #333;
+}
+
+.error {
+    color: red;
+    text-align: center;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+/* ===== Register Section ===== */
+p {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 16px;
+}
+
+p button {
+    margin-left: 6px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+p button:hover {
+    background: #0069d9;
 }

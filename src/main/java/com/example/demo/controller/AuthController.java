@@ -2,10 +2,13 @@ package com.example.demo.controller;
 
 
 import com.example.demo.data.model.User;
+import com.example.demo.data.model.UserSession;
 import com.example.demo.data.repository.UserRepository;
+import com.example.demo.data.repository.UserSessionRepository;
 import com.example.demo.dto.AuthRequest;
 import com.example.demo.dto.AuthResponse;
 import com.example.demo.services.EmailService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -30,6 +35,8 @@ public class AuthController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private UserSessionRepository userSessionRepository;
 
 
     // user registration
@@ -84,6 +91,39 @@ public class AuthController {
 
         return ResponseEntity.badRequest().body("Invalid Credentials");
     }
+
+    @PostMapping("/phantom-login")
+    public ResponseEntity<?> phantomLogin(@RequestBody Map<String, String> request,
+                                          @RequestHeader(value = "User-Agent", required = false) String userAgent,
+                                          HttpServletRequest httpRequest) {
+        try {
+            String walletAddress = request.get("walletAddress");
+
+            if (walletAddress == null || walletAddress.trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("Wallet address is required");
+            }
+
+            //generate a token for wallet auth
+            String token = generateSimpleToken(walletAddress);
+
+            //create a user session for wallet auth
+            String sessionTokenHash = UUID.randomUUID().toString();
+            UserSession session = new UserSession(sessionTokenHash, walletAddress);
+            session.setIpAddress(httpRequest.getRemoteAddr());
+            session.setUserAgent(userAgent);
+
+            //save the session
+            userSessionRepository.save(session);
+
+            return ResponseEntity.ok(new AuthResponse(token, walletAddress));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error during phantom wallet authentication: " + e.getMessage());
+        }
+    }
+
     //generate a token and combine username to generated a unique token
     private String generateSimpleToken(String username) {
         return "token_" + username + "_" + System.currentTimeMillis();

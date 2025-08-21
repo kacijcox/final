@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useWallet} from '@solana/wallet-adapter-react';
 import authService from '../services/authService';
@@ -14,6 +14,8 @@ const Dashboard = () => {
     const authType = authService.getAuthType();
     const isWalletAuth = authType === 'phantom';
     const [currentCoinId, setCurrentCoinId] = useState(null);
+    const showFavoritesRef = useRef();
+
 
     const {connected, disconnect: disconnectWallet, publicKey} = useWallet();
 
@@ -47,6 +49,12 @@ const Dashboard = () => {
 
     const userIdForFavorites = isWalletAuth ? null : username;
     const walletAddressForFavorites = isWalletAuth ? walletAddress : null;
+
+    const handleFavoriteAdded = () => {
+        if (showFavoritesRef.current && showFavoritesRef.current.refreshFavorites) {
+            showFavoritesRef.current.refreshFavorites();
+        }
+    };
 
     const handleRegularLogout = () => {
         authService.logout();
@@ -106,9 +114,11 @@ const Dashboard = () => {
                     coinId={currentCoinId}
                     userId={userIdForFavorites}
                     walletAddress={walletAddressForFavorites}
+                    onFavoriteAdded={handleFavoriteAdded}
                 />
 
                 <ShowFavorites
+                    ref={showFavoritesRef}
                     userId={userIdForFavorites}
                     walletAddress={walletAddressForFavorites}
                 />

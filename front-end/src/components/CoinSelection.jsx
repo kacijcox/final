@@ -92,7 +92,7 @@ const CoinSelection = ( {onCoinLoaded}) => {
 
     return (
         <div className="coin-selection-wrapper">
-            <label className="dropdown-label">Enter CoinGecko Coin ID</label>
+            <label className="dropdown-label">Enter A Cryptocurrency</label>
             <p className="select-a-coin">Example: "bitcoin"</p>
 
             <form className="input-form" onSubmit={onSubmit}>

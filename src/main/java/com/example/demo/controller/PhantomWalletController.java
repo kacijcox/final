@@ -48,11 +48,12 @@ public class PhantomWalletController {
             wallet = phantomWalletService.save(newWallet);
     }
 
-    // Always create a session for every connection (new or existing)
     String tokenHash = UUID.randomUUID().toString();
     UserSession session = new UserSession(tokenHash, wallet.getWalletAddress());
     session.setIpAddress(httpRequest.getRemoteAddr());
     session.setUserAgent(userAgent);
+    userSessionRepository.save(session);
+
     return ResponseEntity.ok(wallet);
 }
 

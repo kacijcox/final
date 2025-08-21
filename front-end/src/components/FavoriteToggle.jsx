@@ -2,7 +2,7 @@ import {useState} from "react";
 import favoriteService from "../services/favoriteService.js";
 
 
-function FavoriteToggle({ coinId, userId, walletAddress }) {
+function FavoriteToggle({ coinId, userId, walletAddress, onFavoriteAdded}) {
   const [checked, setChecked] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
@@ -11,7 +11,7 @@ function FavoriteToggle({ coinId, userId, walletAddress }) {
   async function handleSave(e) {
     e.preventDefault();
 
-      if (!canSave) return;
+        if (!canSave) return;
     setSaving(true);
     setError(null);
     try {
@@ -21,6 +21,10 @@ function FavoriteToggle({ coinId, userId, walletAddress }) {
             await favoriteService.favoritesUser(coinId, userId);
         }
         setChecked(true);
+
+        if (onFavoriteAdded) {
+            onFavoriteAdded();
+        }
     } catch (err) {
       setError('Could not save favorite');
     } finally {

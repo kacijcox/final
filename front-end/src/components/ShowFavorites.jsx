@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import {forwardRef, useEffect, useImperativeHandle, useState} from "react";
 import favoriteService from "../services/favoriteService.js";
 
-const ShowFavorites = ({ userId, walletAddress }) => {
+  const ShowFavorites = forwardRef(({ userId, walletAddress }, ref) => {
   const [show, setShow] = useState(false);
   const [favorites, setFavorites] = useState([]);
   const [error, setError] = useState("");
@@ -20,20 +20,30 @@ const ShowFavorites = ({ userId, walletAddress }) => {
       } else {
         setFavorites([]);
       }
+
     } catch {
       setError("Could not load favorites.");
       setFavorites([]);
     }
   }
 
-  useEffect(() => {
+    useImperativeHandle(ref, () => ({
+        refreshFavorites: async () => {
+            if (show && canLoad) {
+                await loadFavorites();
+            }
+        }
+    }), [show, canLoad, loadFavorites]);
+
+
+    useEffect(() => {
     if (show && canLoad) {
       loadFavorites();
     }
     if (!show) {
       setFavorites([]);
     }
-  }, [show, userId, walletAddress]);
+  }, [canLoad, loadFavorites, show, userId, walletAddress]);
 
   const toggleShow = () => setShow((prev) => !prev);
 
@@ -64,6 +74,6 @@ const ShowFavorites = ({ userId, walletAddress }) => {
       )}
     </div>
   );
-};
+});
 
 export default ShowFavorites;
