@@ -30,6 +30,8 @@ public class AuthController {
     @Autowired
     private EmailService emailService;
 
+
+
     // user registration
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody @Valid AuthRequest request) {
