@@ -40,7 +40,7 @@ function FavoriteToggle({ coinId, userId, walletAddress, onFavoriteAdded}) {
           checked={checked}
           onChange={(e) => setChecked(e.target.checked)}
         />
-        Save to favorites
+        Save To Favorites
       </label>
       <button
         style={{ marginLeft: 8 }}
@@ -48,7 +48,6 @@ function FavoriteToggle({ coinId, userId, walletAddress, onFavoriteAdded}) {
       >
         {saving ? 'Saving...' : 'Submit Favorite'}
       </button>
-      {!canSave && <small style={{ marginLeft: 8 }}>(saves coin to favorite list)</small>}
       {error && <div style={{ color: 'red', marginTop: 6 }}>{error}</div>}
     </div>
   );

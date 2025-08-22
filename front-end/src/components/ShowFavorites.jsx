@@ -65,7 +65,7 @@ import favoriteService from "../services/favoriteService.js";
             <ul>
               {favorites.map((f, i) => (
                 <li key={f.id ?? `${f.coinId}-${i}`}>
-                  {f.coinId}
+                  {f.coinId.charAt(0).toUpperCase() + f.coinId.slice(1)}
                 </li>
               ))}
             </ul>

@@ -7,6 +7,7 @@ import '../styles/Dashboard.css';
 import Chart from "./Chart.jsx";
 import FavoriteToggle from "./FavoriteToggle.jsx";
 import ShowFavorites from "./ShowFavorites.jsx";
+import Navbar from "../components/Navbar.jsx";
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -86,7 +87,7 @@ const Dashboard = () => {
                 <h1 className="welcome-header">
                     Welcome{isWalletAuth && walletName ? `, ${walletName}` : displayName ? `, ${displayName}` : ''}!
                 </h1>
-
+                <h1 className="dashboard-header">HedgeHog Dashboard</h1>
                 {isWalletAuth ? (
                     <>
                         {connected && (
@@ -104,7 +105,6 @@ const Dashboard = () => {
                     </button>
                 )}
 
-                <h2 className="dashboard-header">HedgeHog Dashboard</h2>
             </div>
 
             <div className="coin-selection">
@@ -123,10 +123,7 @@ const Dashboard = () => {
                     walletAddress={walletAddressForFavorites}
                 />
             </div>
-
-            <div className="chart-container">
-                <Chart/>
-            </div>
+             <Chart/>
         </>
     );
 };

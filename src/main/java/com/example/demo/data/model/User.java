@@ -1,6 +1,9 @@
 package com.example.demo.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -14,8 +17,13 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role", nullable = false)
-    private Role role = Role.USER; // Set default value
+    private Role role = Role.USER;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = false, updatable = false)
+    @JsonIgnore
+    private List<CoinFavorite> coinFavorites;
+    
     public User() {
     }
 
@@ -28,7 +36,7 @@ public class User {
     public User(String userName, String password) {
         this.userName = userName;
         this.password = password;
-        this.role = Role.USER; // Set default role
+        this.role = Role.USER;
     }
 
     public String getUserName() {
@@ -56,6 +64,6 @@ public class User {
     }
 
     public enum Role {
-        USER
+        USER, ADMIN
     }
 }

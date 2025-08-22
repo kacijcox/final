@@ -80,7 +80,7 @@ const CoinSelection = ( {onCoinLoaded}) => {
 
     function onSubmit(e) {
         e.preventDefault();
-        const id = coinId.trim();
+        const id = coinId.trim().toLowerCase();
         if (!id) {
             setError('Please enter a coin id.');
             return;
@@ -93,7 +93,7 @@ const CoinSelection = ( {onCoinLoaded}) => {
     return (
         <div className="coin-selection-wrapper">
             <label className="dropdown-label">Enter A Cryptocurrency</label>
-            <p className="select-a-coin">Example: "bitcoin"</p>
+            <p className="select-a-coin">Example: "bitcoin, Bitcoin"</p>
 
             <form className="input-form" onSubmit={onSubmit}>
                 <input

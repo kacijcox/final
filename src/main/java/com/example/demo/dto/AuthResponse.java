@@ -1,10 +1,13 @@
 package com.example.demo.dto;
 
+import com.example.demo.data.model.User;
+
 public class AuthResponse {
     private String token;
     private String username;
+    private User.Role role;
 
-    public AuthResponse(String token, String username) {
+    public AuthResponse(String token, String username, User.Role role) {
         this.token = token;
         this.username = username;
     }

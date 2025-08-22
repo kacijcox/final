@@ -86,7 +86,8 @@ public class AuthController {
                 passwordEncoder.matches(request.getPassword(), user.get().getPassword())) {
             //if the password matches, generate a token and return it
             String token = generateSimpleToken(request.getUserName());
-            return ResponseEntity.ok(new AuthResponse(token, request.getUserName()));
+            User.Role role = user.get().getRole();
+            return ResponseEntity.ok(new AuthResponse(token, request.getUserName(), role));
         }
 
         return ResponseEntity.badRequest().body("Invalid Credentials");
@@ -115,7 +116,7 @@ public class AuthController {
             //save the session
             userSessionRepository.save(session);
 
-            return ResponseEntity.ok(new AuthResponse(token, walletAddress));
+            return ResponseEntity.ok(new AuthResponse(token, walletAddress, User.Role.USER));
 
         } catch (Exception e) {
             e.printStackTrace();

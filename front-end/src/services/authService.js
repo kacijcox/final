@@ -44,13 +44,20 @@ const authService = {
     },
 
     logout: () => {
-        localStorage.clear();
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        localStorage.removeItem('role');
+        window.dispatchEvent(new Event('authChange'));
     },
 
     isLoggedIn: () => !!localStorage.getItem('token'),
 
     getUsername: () => {
         return localStorage.getItem('username');
+    },
+
+    getRole() {
+        return localStorage.getItem('role');
     },
 
     getToken: () => {
@@ -67,7 +74,12 @@ const authService = {
 
     isAuthenticated: () => {
         return !!localStorage.getItem('token');
+    },
+
+    isAdmin() {
+        return this.getRole() === 'ADMIN';
     }
+
 };
 
 export default authService;
