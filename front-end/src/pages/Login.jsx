@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import authService from '../services/authService';
+import authService from '../services/authService.js';
 import {WalletMultiButton} from "@solana/wallet-adapter-react-ui";
 import {useWallet} from "@solana/wallet-adapter-react";
 import '../styles/Login.css';

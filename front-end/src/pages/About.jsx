@@ -1,9 +1,12 @@
 import React from 'react';
 import hedgeHog from '../assets/hedgehog.webp';
+import Navbar from "../components/Navbar.jsx";
 
 const About = () => {
     return (
-        <div className="about-page">
+        <>
+            <Navbar />
+            <div className="about-page">
             <div className="container about-box">
                 <h1 className="header-text">About Us</h1>
             </div>
@@ -109,6 +112,7 @@ const About = () => {
                 </ul>
             </div>
         </div>
+        </>
     );
 };
 

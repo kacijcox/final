@@ -7,9 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user-sessions")
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:3000"})
+
 
 public class UserSessionController {
 
@@ -17,6 +20,11 @@ public class UserSessionController {
 
     public UserSessionController(UserSessionRepository userSessionRepository) {
         this.userSessionRepository = userSessionRepository;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserSession>> listAll() {
+        return ResponseEntity.ok(userSessionRepository.findAll());
     }
 
     @PostMapping

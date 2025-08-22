@@ -19,6 +19,8 @@ const authService = {
             const data = await response.json();
             localStorage.setItem('token', data.token);
             localStorage.setItem('username', data.username);
+            localStorage.setItem('role', data.role || 'USER');
+            window.dispatchEvent(new Event('authChange'));
             return data;
         }
         throw new Error('Login failed');
@@ -40,6 +42,11 @@ const authService = {
         localStorage.setItem('username', data.username || walletAddress);
         localStorage.setItem('authType', 'phantom');
         localStorage.setItem('walletAddress', walletAddress);
+        // ensure role is set if backend provides it
+        if (data.role) {
+            localStorage.setItem('role', data.role);
+        }
+        window.dispatchEvent(new Event('authChange'));
         return data;
     },
 

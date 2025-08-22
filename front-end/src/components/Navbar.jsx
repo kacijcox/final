@@ -15,8 +15,16 @@ const Navbar = () => {
 
         window.addEventListener('authChange', handleAuthChange);
 
+        const handleStorage = (e) => {
+            if (['token', 'role', 'username'].includes(e.key)) {
+                handleAuthChange();
+            }
+        };
+        window.addEventListener('storage', handleStorage);
+
         return () => {
             window.removeEventListener('authChange', handleAuthChange);
+            window.removeEventListener('storage', handleStorage);
         };
     }, []);
 
@@ -27,10 +35,7 @@ const Navbar = () => {
                 <div className="sidebar-links">
                     <Link to="/dashboard" className="sidebar-link">Dashboard</Link>
                     <Link to="/about" className="sidebar-link">About</Link>
-                    <Link to="/safety" className="sidebar-link">Safety</Link>
-                    {isAdmin && (
-                        <Link to="/admin" className="sidebar-link">Admin</Link>
-                    )}
+                    {isAdmin && <Link to="/admin" className="sidebar-link">Admin</Link>}
                 </div>
             )}
         </nav>

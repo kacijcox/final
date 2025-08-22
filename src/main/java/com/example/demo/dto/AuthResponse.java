@@ -10,6 +10,7 @@ public class AuthResponse {
     public AuthResponse(String token, String username, User.Role role) {
         this.token = token;
         this.username = username;
+        this .role = role;
     }
 
     public String getToken() {
@@ -26,5 +27,13 @@ public class AuthResponse {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public User.Role getRole() {
+        return role;
+    }
+
+    public void setRole(User.Role role) {
+        this.role = role;
     }
 }

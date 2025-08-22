@@ -2,10 +2,10 @@ DROP DATABASE IF EXISTS digitalassets;
 CREATE DATABASE digitalassets;
 USE digitalassets;
 
--- SELECT * FROM `user`;
+SELECT * FROM `user`;
 -- SELECT * FROM phantom_wallets;
 -- select * FROM coin_favorites;
-select * from user_session;
+-- select * from user_session;
 
 CREATE TABLE phantom_wallets (
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -15,7 +15,7 @@ wallet_address VARCHAR(255) UNIQUE NOT NULL
 CREATE TABLE `user` (
 user_id VARCHAR(25) PRIMARY KEY NOT NULL,
 password_hash TEXT,
-user_role ENUM('USER') NOT NULL DEFAULT 'USER'  
+user_role ENUM('USER','ADMIN') NOT NULL DEFAULT 'USER' 
 );
 
 CREATE TABLE coin_favorites (
@@ -47,6 +47,8 @@ CREATE TABLE user_session (
     FOREIGN KEY (wallet_address) REFERENCES phantom_wallets (wallet_address)
 ) ENGINE=InnoDB;
 
+INSERT INTO `user` (user_id, password_hash, user_role)
+VALUES ('admin', '$2y$10$Gk6DwmhkIXdbEVKVWJANj.xBPuKTCIp.LqS11/hG2nBDsxQWA9ziS', 'ADMIN');
 
 
 

@@ -1,4 +1,4 @@
-import {forwardRef, useEffect, useImperativeHandle, useState} from "react";
+import {forwardRef, useCallback, useEffect, useImperativeHandle, useState} from "react";
 import favoriteService from "../services/favoriteService.js";
 
   const ShowFavorites = forwardRef(({ userId, walletAddress }, ref) => {
@@ -8,7 +8,7 @@ import favoriteService from "../services/favoriteService.js";
 
   const canLoad = !!userId || !!walletAddress;
 
-  async function loadFavorites() {
+  const loadFavorites = useCallback(async () =>  {
     setError("");
     try {
       if (userId) {
@@ -22,10 +22,10 @@ import favoriteService from "../services/favoriteService.js";
       }
 
     } catch {
-      setError("Could not load favorites.");
-      setFavorites([]);
+        setError("Could not load favorites.");
+        setFavorites([]);
     }
-  }
+  }, [userId, walletAddress])
 
     useImperativeHandle(ref, () => ({
         refreshFavorites: async () => {
@@ -36,16 +36,15 @@ import favoriteService from "../services/favoriteService.js";
     }), [show, canLoad, loadFavorites]);
 
 
-    useEffect(() => {
-    if (show && canLoad) {
-      loadFavorites();
-    }
-    if (!show) {
-      setFavorites([]);
-    }
-  }, [canLoad, loadFavorites, show, userId, walletAddress]);
+      useEffect(() => {
+          if (show && canLoad) {
+              loadFavorites();
+          } else if (!show) {
+              setFavorites([]);
+          }
+      }, [show, canLoad, loadFavorites]);
 
-  const toggleShow = () => setShow((prev) => !prev);
+      const toggleShow = () => setShow((prev) => !prev);
 
   return (
     <div>

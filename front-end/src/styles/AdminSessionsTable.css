@@ -1,0 +1,25 @@
+.table-container {
+    overflow-x: auto;
+}
+
+.sessions-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.sessions-table th {
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
+    background: #f7f7f7;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.sessions-table td {
+    border-bottom: 1px solid #eee;
+    padding: 8px;
+    vertical-align: top;
+}
+

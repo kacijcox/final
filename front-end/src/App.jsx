@@ -1,35 +1,49 @@
 import React from 'react';
-import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
-import Login from './components/Login';
-import Register from './components/Register';
-import Dashboard from './components/Dashboard.jsx';
+import {BrowserRouter as Router, Routes, Route, Navigate, Outlet} from 'react-router-dom';
+import Login from './pages/Login.jsx';
+import Register from './pages/Register.jsx';
+import Dashboard from './pages/Dashboard.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import WalletConnectionProvider from './services/WalletConnectionProvider.jsx';
-import About from "./components/About";
-import Navbar from "./components/Navbar.jsx";
-import Admin from "./components/Admin.jsx";
+import About from "./pages/About.jsx";
+import Admin from "./pages/Admin.jsx";
 import AdminRoute from "./components/AdminRoute.jsx";
+import Navbar from "./components/Navbar.jsx";
+
+function Layout() {
+    return (
+        <div className="app-shell">
+            <Navbar/>
+            <main style={{marginLeft: 240, padding: 16}}>
+                <Outlet/>
+            </main>
+        </div>
+    );
+}
 
 function App() {
     return (
         <WalletConnectionProvider>
             <Router>
-                <Navbar />
                 <Routes>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/register" element={<Register/>}/>
-                    <Route path="/about" element={<About />} />
+
                     <Route
-                        path="/dashboard"
                         element={
                             <ProtectedRoute>
-                                <Dashboard/>
+                                <Layout/>
                             </ProtectedRoute>
                         }
-                    />
-                    <Route path="/" element={<Navigate to="/dashboard"/>}/>
-                    <Route element={<AdminRoute />}>
-                        <Route path="/admin" element={<Admin />} />
+                    >
+                        <Route path="/dashboard" element={<Dashboard/>}/>
+                        <Route path="/about" element={<About/>}/>
+
+                        <Route element={<AdminRoute/>}>
+                            <Route path="/admin" element={<Admin/>}/>
+                        </Route>
+
+                        <Route path="/" element={<Navigate to="/dashboard"/>}/>
                     </Route>
                 </Routes>
             </Router>

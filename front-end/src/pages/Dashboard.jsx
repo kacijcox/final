@@ -1,12 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useWallet} from '@solana/wallet-adapter-react';
-import authService from '../services/authService';
-import CoinSelection from './CoinSelection'
+import authService from '../services/authService.js';
+import CoinSelection from '../components/CoinSelection.jsx'
 import '../styles/Dashboard.css';
-import Chart from "./Chart.jsx";
-import FavoriteToggle from "./FavoriteToggle.jsx";
-import ShowFavorites from "./ShowFavorites.jsx";
+import Chart from "../components/Chart.jsx";
+import FavoriteToggle from "../components/FavoriteToggle.jsx";
+import ShowFavorites from "../components/ShowFavorites.jsx";
 import Navbar from "../components/Navbar.jsx";
 
 const Dashboard = () => {
@@ -83,6 +83,7 @@ const Dashboard = () => {
 
     return (
         <>
+            <Navbar />
             <div className="header-section">
                 <h1 className="welcome-header">
                     Welcome{isWalletAuth && walletName ? `, ${walletName}` : displayName ? `, ${displayName}` : ''}!
