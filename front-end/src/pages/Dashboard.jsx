@@ -8,6 +8,8 @@ import Chart from "../components/Chart.jsx";
 import FavoriteToggle from "../components/FavoriteToggle.jsx";
 import ShowFavorites from "../components/ShowFavorites.jsx";
 import Navbar from "../components/Navbar.jsx";
+import Footer from "../components/Footer.jsx";
+import WalletViewer from "../components/WalletViewer.jsx";
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -88,7 +90,7 @@ const Dashboard = () => {
                 <h1 className="welcome-header">
                     Welcome{isWalletAuth && walletName ? `, ${walletName}` : displayName ? `, ${displayName}` : ''}!
                 </h1>
-                <h1 className="dashboard-header">HedgeHog Dashboard</h1>
+                <h1 className="dashboard-header">Hedge Hog Dashboard</h1>
                 {isWalletAuth ? (
                     <>
                         {connected && (
@@ -124,7 +126,9 @@ const Dashboard = () => {
                     walletAddress={walletAddressForFavorites}
                 />
             </div>
+            <WalletViewer/>
              <Chart/>
+            <Footer />
         </>
     );
 };

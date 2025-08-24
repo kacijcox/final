@@ -9,6 +9,7 @@ import About from "./pages/About.jsx";
 import Admin from "./pages/Admin.jsx";
 import AdminRoute from "./components/AdminRoute.jsx";
 import Navbar from "./components/Navbar.jsx";
+import Safety from "./pages/Safety.jsx";
 
 function Layout() {
     return (
@@ -38,6 +39,7 @@ function App() {
                     >
                         <Route path="/dashboard" element={<Dashboard/>}/>
                         <Route path="/about" element={<About/>}/>
+                        <Route path="/safety" element={<Safety/>}/>
 
                         <Route element={<AdminRoute/>}>
                             <Route path="/admin" element={<Admin/>}/>

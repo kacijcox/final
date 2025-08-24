@@ -1,6 +1,8 @@
 import React from 'react';
 import hedgeHog from '../assets/hedgehog.webp';
 import Navbar from "../components/Navbar.jsx";
+import '../styles/About.css';
+import Footer from "../components/Footer.jsx";
 
 const About = () => {
     return (
@@ -8,7 +10,7 @@ const About = () => {
             <Navbar />
             <div className="about-page">
             <div className="container about-box">
-                <h1 className="header-text">About Us</h1>
+                <h1 className="header-text">About Hedge Hog</h1>
             </div>
 
             <div className="hedge">
@@ -16,7 +18,7 @@ const About = () => {
                     className="hedge-pic"
                     src={hedgeHog}
                     alt="hedgepic"
-                    width={275}
+                    width={400}
                     height={400}
                 />
             </div>
@@ -27,7 +29,7 @@ const About = () => {
                     responsibly. We understand how stressful navigating trading can be, especially in digital currencies.
                     That’s why we offer several tiers. Our free tier is accessible to everyone and provides trading tutorials
                     and helpful websites to make your journey easier and safer. Speaking of safety, visit our
-                    <a href="/safety"> safety page</a> to learn more about securing your digital assets. Subscribe to our
+                    <a href="/Safety"> safety page</a> to learn more about securing your digital assets. Subscribe to our
                     premium package, and a live agent will be available 24/7 to guide you with all your trading questions and needs.
                 </p>
             </div>
@@ -112,6 +114,7 @@ const About = () => {
                 </ul>
             </div>
         </div>
+            <Footer />
         </>
     );
 };

@@ -1,10 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.services.SolanaSwapService;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 public class SolanaController {
@@ -15,8 +15,8 @@ public class SolanaController {
         this.solanaService = solanaService;
     }
 
-    @GetMapping("/transactions")
-    public List<String> getTransactions() {
-        return solanaService.getRecentTransactions(10);
+    @GetMapping(value = "/token-balances", produces = "application/json")
+    public JsonNode getTokenBalances(@RequestParam("walletAddress") String walletAddress) {
+        return solanaService.getAccountInfo(walletAddress);
     }
 }

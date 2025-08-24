@@ -4,6 +4,7 @@ import authService from '../services/authService.js';
 import {WalletMultiButton} from "@solana/wallet-adapter-react-ui";
 import {useWallet} from "@solana/wallet-adapter-react";
 import '../styles/Login.css';
+import Footer from "../components/Footer.jsx";
 
 
 const Login = () => {
@@ -66,6 +67,7 @@ const Login = () => {
 
 
     return (
+        <>
         <div>
             <h3 className="warning-message">IMPORTANT : <br/> PLEASE ONLY USE A TEST WALLET. <br /> THIS SITE DOES NOT PROTECT AGAINST ROUGE TRANSACTION SIGNING.<br />
                 I AM NOT RESPONSIBLE FOR LOST FUNDS. DEMO SITE ONLY.</h3>
@@ -107,8 +109,9 @@ const Login = () => {
                 <button onClick={() => navigate('/register')}>Register</button>
             </p>
         </div>
+            <Footer />
+            </>
     )
 }
-
 
 export default Login;
