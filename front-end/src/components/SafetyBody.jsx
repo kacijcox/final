@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/safety.css";
+import "../styles/Safety.css";
 
 const SafetyBody = () => {
     return (
