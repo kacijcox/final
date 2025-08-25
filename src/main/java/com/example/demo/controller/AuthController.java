@@ -78,15 +78,25 @@ public class AuthController {
 
     //login logic
     @PostMapping("/login")
-    //response entity wildcard for returning different types of responses
-    public ResponseEntity<?> login(@RequestBody AuthRequest request) {
+    public ResponseEntity<?> login(@RequestBody AuthRequest request,
+                                   @RequestHeader(value = "User-Agent", required = false) String userAgent,
+                                   HttpServletRequest httpRequest) {
         Optional<User> user = userRepository.findByUserName(request.getUserName());
-        //if the user exists, check if the password matches
         if (user.isPresent() &&
                 passwordEncoder.matches(request.getPassword(), user.get().getPassword())) {
-            //if the password matches, generate a token and return it
+            //generate token
             String token = generateSimpleToken(request.getUserName());
             User.Role role = user.get().getRole();
+
+        String sessionTokenHash = UUID.randomUUID().toString();
+        UserSession session = new UserSession();
+        session.setSessionTokenHash(sessionTokenHash);
+        session.setUserId(user.get().getUserName());
+        session.setIpAddress(httpRequest.getRemoteAddr());
+        session.setUserAgent(userAgent != null ? userAgent : "Unknown");
+
+        userSessionRepository.save(session);
+
             return ResponseEntity.ok(new AuthResponse(token, request.getUserName(), role));
         }
 
