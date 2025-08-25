@@ -21,14 +21,14 @@ jobs:
           java-version: '21'
           distribution: 'microsoft'
 
-      - name: Build with Maven
+      - name: Build with Maven (skip tests)
         run: mvn clean install -DskipTests
 
-      - name: Upload artifact for deployment job
+      - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
-          name: java-app
-          path: '${{ github.workspace }}/target/*.jar'
+          name: app-jar
+          path: target/*.jar
 
   deploy:
     runs-on: windows-latest
@@ -38,10 +38,11 @@ jobs:
       contents: read
 
     steps:
-      - name: Download artifact from build job
+      - name: Download JAR artifact
         uses: actions/download-artifact@v4
         with:
-          name: java-app
+          name: app-jar
+          path: ./app-jar
 
       - name: Login to Azure
         uses: azure/login@v2
@@ -51,9 +52,8 @@ jobs:
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B732800717D841F6AB423C1B6B45FB0B }}
 
       - name: Deploy to Azure Web App
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'final-project-backend'
           slot-name: 'Production'
-          package: 'java-app/*.jar'
+          package: './app-jar/*.jar'
