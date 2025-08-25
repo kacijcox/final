@@ -95,7 +95,6 @@ public class SolanaSwapService {
                     }
 
                     entry.put("uiAmountString", amount.path("uiAmountString").asText(""));
-
                     out.add(entry);
                 }
             }
