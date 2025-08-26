@@ -106,38 +106,40 @@ const CoinSelection = ( {onCoinLoaded}) => {
                 <button className="fetch-button" type="submit">Get Price</button>
             </form>
 
-            <div className="price-display-container">
-                {loading && <p className="loading-text">Loading price...</p>}
-                {error && <p className="error-text">{error}</p>}
-                {priceData && !loading && (
-                    <div className="price-info">
-                        {priceData.usd !== undefined ? (
-                            <>
-                                <p className="current-price">${priceData.usd.toLocaleString()}</p>
-                                {priceData.usd_24h_change !== undefined && (
+            {(loading || error || priceData) && (
+                <div className="price-display-container">
+                    {loading && <p className="loading-text">Loading price...</p>}
+                    {error && <p className="error-text">{error}</p>}
+                    {priceData && !loading && priceData.usd !== undefined && (
+                        <div className="price-info">
+                            <p className="current-price">${priceData.usd.toLocaleString()}</p>
+                            {priceData.usd_24h_change !== undefined && (
+                                <>
                                     <p className="price-change">
                                         24hr Change: {priceData.usd_24h_change >= 0 ? '+' : ''}
                                         {priceData.usd_24h_change.toFixed(2)}% (24h)
-                                        <p className="market-cap">Market Cap:
-                                            ${priceData.usd_market_cap.toLocaleString(undefined, {
-                                                minimumFractionDigits:2,
-                                                maximumFractionDigits:2
-                                            })}
-                                            <p className="volume">24hr Volume: ${priceData.usd_24h_vol.toLocaleString()}</p>
-                                        </p>
                                     </p>
-                                )}
-                            </>
-                        ) : (
-                            <p className="error-text">No price data for that coin id.</p>
-                        )}
-                    </div>
-                )}
-            </div>
+                                    <p className="market-cap">
+                                        Market Cap: ${priceData.usd_market_cap.toLocaleString(undefined, {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    })}
+                                    </p>
+                                    <p className="volume">
+                                        24hr Volume: ${priceData.usd_24h_vol.toLocaleString()}
+                                    </p>
+                                </>
+                            )}
+                        </div>
+                    )}
+                    {priceData && priceData.usd === undefined && (
+                        <p className="error-text">No price data for that coin id.</p>
+                    )}
+                </div>
+            )}
         </div>
     );
 };
 
-
-export {CoinSelection};
+export { CoinSelection };
 export default CoinSelection;

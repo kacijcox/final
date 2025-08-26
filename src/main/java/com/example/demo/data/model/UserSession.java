@@ -34,13 +34,13 @@ public class UserSession {
     @UpdateTimestamp
     private LocalDateTime lastSeenAt;
 
-    public UserSession() {}
+    public UserSession() {
+    }
 
     public UserSession(String sessionTokenHash, String walletAddress) {
         this.sessionTokenHash = sessionTokenHash;
         this.walletAddress = walletAddress;
     }
-
 
 
     public String getSessionTokenHash() {

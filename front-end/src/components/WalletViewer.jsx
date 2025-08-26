@@ -41,6 +41,7 @@ const WalletViewer = () => {
                             ...item,
                             name: meta.name || item.mint,
                             symbol: meta.symbol || "",
+                            logo: meta.logoURI
                         };
                     } catch {
                         return {
