@@ -1,4 +1,6 @@
+
 import React, { useState } from "react";
+import "../styles/WalletViewer.css";
 
 const WalletViewer = () => {
     const [wallet, setWallet] = useState("");
@@ -41,7 +43,6 @@ const WalletViewer = () => {
                             ...item,
                             name: meta.name || item.mint,
                             symbol: meta.symbol || "",
-                            logo: meta.logoURI
                         };
                     } catch {
                         return {
@@ -61,30 +62,44 @@ const WalletViewer = () => {
     };
 
     return (
-        <div>
-            <input
-                type="text"
-                value={wallet}
-                placeholder="Wallet address"
-                onChange={(e) => setWallet(e.target.value)}
-            />
-            <button onClick={fetchResults} disabled={loading}>
-                {loading ? "Loading..." : "Get Balances"}
-            </button>
+        <div className="wallet-viewer-container">
+            <div className="wallet-input-section">
+                <input
+                    type="text"
+                    value={wallet}
+                    placeholder="Wallet address"
+                    onChange={(e) => setWallet(e.target.value)}
+                />
+                <button onClick={fetchResults} disabled={loading}>
+                    {loading ? "Loading..." : "Get Balances For Wallets On Solana"}
+                </button>
+            </div>
+            <div className="what-is-solana">
+                <a href="https://solana.com/" target="_blank" rel="noopener noreferrer">
+                    What is Solana?
+                </a>
+            </div>
+            <div className="what-is-solana">
+                <a href="https://solana.com/developers" target="_blank" rel="noopener noreferrer">
+                    Build on Solana
+                </a>
+            </div>
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p className="error-message">{error}</p>}
 
-            <ul>
-                {results.length === 0 && !error && <li>No results yet.</li>}
-                {results.map((item, i) => (
-                    <li key={i}>
-                        <div>Name: {item.name}</div>
-                        <div>Symbol: {item.symbol}</div>
-                        <div>Mint: {item.mint}</div>
-                        <div>Amount: {item.amount}</div>
-                    </li>
-                ))}
-            </ul>
+            <div className="wallet-results">
+                <ul>
+                    {results.length === 0 && !error && <li>No results yet.</li>}
+                    {results.map((item, i) => (
+                        <li key={i}>
+                            <div>Name: {item.name}</div>
+                            <div>Symbol: {item.symbol}</div>
+                            <div>Mint: {item.mint}</div>
+                            <div>Amount: {item.amount}</div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 };

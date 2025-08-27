@@ -1,0 +1,124 @@
+.wallet-viewer-container {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 1200px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.wallet-input-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.wallet-input-section input {
+  flex: 1;
+  min-width: 250px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.wallet-input-section button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.wallet-input-section button:hover {
+  background-color: #0056b3;
+}
+
+.wallet-input-section button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.what-is-solana {
+  margin: 10px 0;
+}
+
+.what-is-solana a {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.what-is-solana a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.wallet-results {
+  margin-top: 15px;
+}
+
+.wallet-results ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.wallet-results li {
+  background-color: white;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.wallet-results li div {
+  margin-bottom: 5px;
+}
+
+.error-message {
+  color: red;
+  margin: 10px 0;
+}
+
+@media (min-width: 992px) {
+  .dashboard-layout {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .coin-selection {
+    width: 48%;
+  }
+  
+  .wallet-viewer-container {
+    width: 48%;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .wallet-input-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .wallet-input-section input,
+  .wallet-input-section button {
+    width: 100%;
+  }
+}

@@ -123,3 +123,10 @@ p button {
 p button:hover {
     background: #0069d9;
 }
+
+.powered-by-solana {
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

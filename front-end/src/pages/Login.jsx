@@ -5,7 +5,7 @@ import {WalletMultiButton} from "@solana/wallet-adapter-react-ui";
 import {useWallet} from "@solana/wallet-adapter-react";
 import '../styles/Login.css';
 import Footer from "../components/Footer.jsx";
-
+import poweredbysolana from "../assets/powered-by-color.svg";
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -68,12 +68,19 @@ const Login = () => {
 
     return (
         <>
+
         <div>
             <h3 className="warning-message">IMPORTANT : <br/> PLEASE ONLY USE A TEST WALLET. <br /> THIS SITE DOES NOT PROTECT AGAINST ROUGE TRANSACTION SIGNING.<br />
                 I AM NOT RESPONSIBLE FOR LOST FUNDS. DEMO SITE ONLY.</h3>
 
 
             <h1 className="welcome-hedgehog">HedgeHog</h1>
+            <div className="powered-by-solana">
+            <img
+                className="solana-logo"
+                src={poweredbysolana}
+                alt="solana" />
+            </div>
             <form onSubmit={handleRegularLogin}>
                 {error && <div style={{color: 'red'}}>{error}</div>}
                 <input

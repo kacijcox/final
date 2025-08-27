@@ -3,6 +3,7 @@ import hedgeHog from '../assets/hedgehog.webp';
 import Navbar from "../components/Navbar.jsx";
 import '../styles/About.css';
 import Footer from "../components/Footer.jsx";
+import poweredbysolana from "../assets/powered-by-color.svg";
 
 const About = () => {
     return (
@@ -22,6 +23,13 @@ const About = () => {
                     height={400}
                 />
             </div>
+
+                <div className="powered-by-solana">
+                    <img
+                        className="solana-logo"
+                        src={poweredbysolana}
+                        alt="solana" />
+                </div>
 
             <div className="container about-box">
                 <p className="about">
@@ -101,14 +109,6 @@ const About = () => {
                             <li><strong>CoinGecko API</strong> - Cryptocurrency price data</li>
                             <li><strong>CoinGecko Widgets</strong> - Price chart visualization</li>
                             <li><strong>Gmail SMTP</strong> - Email service integration</li>
-                        </ul>
-                    </li>
-
-                    <li><strong>Azure Integration</strong>
-                        <ul>
-                            <li><strong>Azure SQL Database</strong> - Cloud database migration</li>
-                            <li><strong>Azure App Service</strong> - Application hosting</li>
-                            <li><strong>Azure Key Vault</strong>  - Secure configuration management</li>
                         </ul>
                     </li>
                 </ul>

@@ -10,6 +10,7 @@ import ShowFavorites from "../components/ShowFavorites.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import WalletViewer from "../components/WalletViewer.jsx";
+import poweredbysolana from "../assets/powered-by-color.svg";
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -91,6 +92,12 @@ const Dashboard = () => {
                     Welcome{isWalletAuth && walletName ? `, ${walletName}` : displayName ? `, ${displayName}` : ''}!
                 </h1>
                 <h1 className="dashboard-header">Hedge Hog Dashboard</h1>
+                <div className="powered-by-solana">
+                    <img
+                        className="solana-logo"
+                        src={poweredbysolana}
+                        alt="solana" />
+                </div>
                 {isWalletAuth ? (
                     <>
                         {connected && (
@@ -110,24 +117,26 @@ const Dashboard = () => {
 
             </div>
 
-            <div className="coin-selection">
-                <CoinSelection onCoinLoaded={setCurrentCoinId}/>
+            <div className="dashboard-layout">
+                <div className="coin-selection">
+                    <CoinSelection onCoinLoaded={setCurrentCoinId}/>
 
-                <FavoriteToggle
-                    coinId={currentCoinId}
-                    userId={userIdForFavorites}
-                    walletAddress={walletAddressForFavorites}
-                    onFavoriteAdded={handleFavoriteAdded}
-                />
+                    <FavoriteToggle
+                        coinId={currentCoinId}
+                        userId={userIdForFavorites}
+                        walletAddress={walletAddressForFavorites}
+                        onFavoriteAdded={handleFavoriteAdded}
+                    />
 
-                <ShowFavorites
-                    ref={showFavoritesRef}
-                    userId={userIdForFavorites}
-                    walletAddress={walletAddressForFavorites}
-                />
+                    <ShowFavorites
+                        ref={showFavoritesRef}
+                        userId={userIdForFavorites}
+                        walletAddress={walletAddressForFavorites}
+                    />
+                </div>
+                <WalletViewer/>
             </div>
-            <WalletViewer/>
-             <Chart/>
+            <Chart coinId={currentCoinId || 'bitcoin'}/>
             <Footer />
         </>
     );
