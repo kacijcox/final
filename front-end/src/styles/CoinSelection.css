@@ -209,6 +209,12 @@ body {
         font-size: 14px;
     }
 
+    .dropdown-label {
+        align-items: center;
+        display: flex;
+
+    }
+
     .current-price {
         font-size: 20px;
     }
