@@ -74,7 +74,7 @@ const Login = () => {
                 I AM NOT RESPONSIBLE FOR LOST FUNDS. DEMO SITE ONLY.</h3>
 
 
-            <h1 className="welcome-hedgehog">HedgeHog</h1>
+            <h1 className="welcome-hedgehog">Hedge Hog</h1>
             <div className="powered-by-solana">
             <img
                 className="solana-logo"

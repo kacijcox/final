@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, {useState} from "react";
 import "../styles/WalletViewer.css";
 
 const WalletViewer = () => {
@@ -19,46 +18,66 @@ const WalletViewer = () => {
 
         setLoading(true);
         try {
-            const res = await fetch(`http://localhost:8080/token-balances?walletAddress=${wallet}`);
-            if (!res.ok) {
-                setError("Error: " + res.status);
-                setLoading(false);
-                return;
-            }
+            //get balances from backend
+            const res = await fetch(
+                `http://localhost:8080/token-balances?walletAddress=${wallet}`
+            );
+            if (!res.ok) throw new Error("Backend error: " + res.status);
+
             const data = await res.json();
-            if (!Array.isArray(data)) {
-                setError("Unexpected response format.");
-                setLoading(false);
-                return;
+            if (!Array.isArray(data)) throw new Error("Unexpected response format.");
+
+            //collect unique mints from all balances
+            const mints = [
+                ...new Set(
+                    data
+                        .map((x) => (x.mint || "").trim())
+                        .filter((m) => m && typeof m === "string")
+                ),
+            ];
+
+            //query jupiter meta data for each mint
+            const metaById = new Map();
+            for (let i = 0; i < mints.length; i += 100) {
+                const chunk = mints.slice(i, i + 100); //chunk was key in getting the desired enrichment b/c
+                //jupiter's API doesn't handle thousands of mints in one request well so slicing mints into chunks
+                //of 100 seemed to worked. chunk converts arrays into comma sep string and let me retrieve everthing in
+                //one request
+                const url = `https://lite-api.jup.ag/tokens/v2/search?query=${encodeURIComponent(
+                    chunk.join(",")
+                )}`;
+                try {
+                    const metaRes = await fetch(url);
+                    if (!metaRes.ok) continue;
+                    const arr = await metaRes.json();
+                    (arr || []).forEach((t) => {
+                        if (t?.id) metaById.set(t.id.toLowerCase(), t);
+                    });
+                } catch {
+
+                }
             }
 
-            //called jupiter's mint end point to retrieve the token's metadata!
-            const enriched = await Promise.all(
-                data.map(async (item) => {
-                    try {
-                        const metaRes = await fetch(`https://tokens.jup.ag/token/${item.mint}`);
-                        if (!metaRes.ok) throw new Error("No metadata");
-                        const meta = await metaRes.json();
-                        return {
-                            ...item,
-                            name: meta.name || item.mint,
-                            symbol: meta.symbol || "",
-                        };
-                    } catch {
-                        return {
-                            ...item,
-                            name: item.mint,
-                            symbol: "",
-                        };
-                    }
-                })
-            );
+            //enrich metadata from jupiter
+            const enriched = data.map((item) => {
+                const key = (item.mint || "").trim().toLowerCase();
+                const meta = metaById.get(key);
+                return {
+                    ...item,
+                    name: meta?.name || item.name || item.mint,
+                    symbol: meta?.symbol || item.symbol || "",
+                    icon: meta?.icon || null,
+                    decimals: meta?.decimals,
+                };
+            });
 
             setResults(enriched);
         } catch (e) {
-            setError("Failed to fetch results");
+            console.error(e);
+            setError(e.message || "Failed to fetch results");
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     return (
@@ -74,13 +93,18 @@ const WalletViewer = () => {
                     {loading ? "Loading..." : "Get Balances For Wallets On Solana"}
                 </button>
             </div>
+
             <div className="what-is-solana">
                 <a href="https://solana.com/" target="_blank" rel="noopener noreferrer">
                     What is Solana?
                 </a>
             </div>
             <div className="what-is-solana">
-                <a href="https://solana.com/developers" target="_blank" rel="noopener noreferrer">
+                <a
+                    href="https://solana.com/developers"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
                     Build on Solana
                 </a>
             </div>
@@ -92,8 +116,17 @@ const WalletViewer = () => {
                     {results.length === 0 && !error && <li>No results yet.</li>}
                     {results.map((item, i) => (
                         <li key={i}>
-                            <div>Name: {item.name}</div>
-                            <div>Symbol: {item.symbol}</div>
+                            <div style={{display: "flex", alignItems: "center", gap: 8}}>
+                                {item.icon && (
+                                    <img
+                                        src={item.icon}
+                                        alt={item.symbol || item.name}
+                                        style={{width: 20, height: 20, borderRadius: 4}}
+                                    />
+                                )}
+                                <strong>{item.name}</strong>
+                                {item.symbol ? <span>({item.symbol})</span> : null}
+                            </div>
                             <div>Mint: {item.mint}</div>
                             <div>Amount: {item.amount}</div>
                         </li>
