@@ -139,4 +139,5 @@ public class AuthController {
     private String generateSimpleToken(String username) {
         return "token_" + username + "_" + System.currentTimeMillis();
     }
+
 }

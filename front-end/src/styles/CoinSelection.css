@@ -14,7 +14,7 @@ body {
 }
 
 .dropdown-label {
-    display: block;
+    display: flex;
     margin-bottom: 8px;
     font-weight: bold;
     color: #333;
