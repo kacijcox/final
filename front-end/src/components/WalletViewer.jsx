@@ -58,16 +58,45 @@ const WalletViewer = () => {
                 }
             }
 
+            const priceData = new Map();
+            try {
+                const priceRes = await fetch("https://price.jup.ag/v4/price");
+                if (priceRes.ok) {
+                    const priceJson = await priceRes.json();
+                    if (priceJson.data) {
+                        Object.entries(priceJson.data).forEach(([mint, data]) => {
+                            priceData.set(mint.toLowerCase(), data.price);
+                        });
+                    }
+                }
+            } catch (e) {
+                console.error("Failed to fetch price data:", e);
+            }
+
             //enrich metadata from jupiter
+            let calculatedTotalValue = 0;
             const enriched = data.map((item) => {
                 const key = (item.mint || "").trim().toLowerCase();
                 const meta = metaById.get(key);
+                const price = priceData.get(key) || 0;
+
+                // Calculate token value in USD
+                const decimals = meta?.decimals || 0;
+                const adjustedAmount = item.amount / Math.pow(10, decimals);
+                const valueUsd = adjustedAmount * price;
+
+                // Add to total value
+                calculatedTotalValue += valueUsd;
+
                 return {
                     ...item,
                     name: meta?.name || item.name || item.mint,
                     symbol: meta?.symbol || item.symbol || "",
                     icon: meta?.icon || null,
                     decimals: meta?.decimals,
+                    price,
+                    valueUsd,
+                    adjustedAmount
                 };
             });
 
@@ -78,6 +107,13 @@ const WalletViewer = () => {
         } finally {
             setLoading(false);
         }
+    };
+
+    const formatCurrency = (value) => {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD'
+        }).format(value);
     };
 
     return (
@@ -128,7 +164,13 @@ const WalletViewer = () => {
                                 {item.symbol ? <span>({item.symbol})</span> : null}
                             </div>
                             <div>Mint: {item.mint}</div>
-                            <div>Amount: {item.amount}</div>
+                            <div>Amount: {item.adjustedAmount.toLocaleString()} {item.symbol}</div>
+                            {item.price > 0 && (
+                                <>
+                                    <div>Price: {formatCurrency(item.price)}</div>
+                                    <div>Value: {formatCurrency(item.valueUsd)}</div>
+                                </>
+                            )}
                         </li>
                     ))}
                 </ul>
